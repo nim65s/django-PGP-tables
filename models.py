@@ -21,8 +21,8 @@ class Key(Model):
         return 'Clef {id} de {name}'.format(**self.__dict__)
 
     def update_infos(self):
-        #call(['gpg', '--recv-key', self.id])
-        ret = check_output(['gpg', '--fingerprint', self.id]).decode('utf-8').split('\n')
+        call(['gpg2', '--recv-key', self.id])
+        ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
         self.fingerprint = ret[1].split('=')[1].replace(' ', '')
         for line in ret[2:]:
             if '<' in line and ']' in line:
@@ -35,7 +35,7 @@ class Key(Model):
 
 
     def check_signatures(self):
-        ret = check_output(['gpg', '--list-sigs', self.id]).decode('utf-8')
+        ret = check_output(['gpg2', '--list-sigs', self.id]).decode('utf-8')
         for signature in self.signed_by.filter(sign=False):
             if signature.signer_id in ret:
                 signature.sign = True
@@ -80,6 +80,7 @@ class KeySigningParty(Model):
         key, created = Key.objects.get_or_create(id=key_id)
         if created:
             key.update_infos()
+            Signature.objects.get_or_create(signer=key, signed=key, sign=True)
         for other_key in self.keys.all():
             Signature.objects.get_or_create(signer=key, signed=other_key)
             Signature.objects.get_or_create(signed=key, signer=other_key)
