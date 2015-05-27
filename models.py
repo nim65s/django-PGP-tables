@@ -21,7 +21,7 @@ class Key(Model):
         return 'Clef {id} de {name}'.format(**self.__dict__)
 
     def update_infos(self):
-        call(['gpg2', '--recv-key', self.id])
+        #call(['gpg2', '--recv-key', self.id])
         ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
         self.fingerprint = ret[1].split('=')[1].replace(' ', '')
         for line in ret[2:]:
@@ -101,6 +101,9 @@ class KeySigningParty(Model):
         return self.signatures().filter(sign=True).count() - self.keys.count(), self.signatures().count() - self.keys.count()
 
     def remove_absents(self):
+        for key in self.absents.all():
+            self.absents.remove(key)
+            self.keys.add(key)
         for key in self.keys.all():
             if self.key_signer(key) < 1 or self.key_signed(key) < 1:
                 self.keys.remove(key)
