@@ -1,11 +1,11 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
-from subprocess import call, check_output
+from subprocess import check_output
 
 from django.core.urlresolvers import reverse
-from django.db.models import Model, CharField, ManyToManyField, ForeignKey, BooleanField, SlugField, TextField
+from django.db.models import BooleanField, CharField, ForeignKey, ManyToManyField, Model, SlugField, TextField
 
 
 class Key(Model):
@@ -21,7 +21,7 @@ class Key(Model):
         return 'Clef {id} de {name}'.format(**self.__dict__)
 
     def update_infos(self):
-        #call(['gpg2', '--recv-key', self.id])
+        # call(['gpg2', '--recv-key', self.id])
         ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
         self.fingerprint = ret[1].split('=')[1].replace(' ', '')
         for line in ret[2:]:
@@ -32,7 +32,6 @@ class Key(Model):
             raise ValueError('la clef %s n’a pas de mail ?' % self.id)
         self.name, self.mail = name.strip(), mail[:-1]
         self.save()
-
 
     def check_signatures(self):
         ret = check_output(['gpg2', '--list-sigs', self.id]).decode('utf-8')

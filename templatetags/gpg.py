@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals, division
+from __future__ import division, unicode_literals
 
 from django import template
 
@@ -11,13 +11,16 @@ register = template.Library()
 def signatures(key, ksp):
     return ksp.key_signatures(key)
 
+
 @register.filter
 def signer(key, ksp):
     return ksp.key_signer(key)
 
+
 @register.filter
 def signed(key, ksp):
     return ksp.key_signed(key)
+
 
 @register.filter
 def stats(ksp):
