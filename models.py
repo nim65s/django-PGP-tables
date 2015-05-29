@@ -40,6 +40,16 @@ class Key(Model):
                 signature.sign = True
                 signature.save()
 
+    def signatures(self, ksp):
+        return [s.sign for s in self.signed.filter(signed__in=ksp.keys.all())]
+
+    def n_signer(self, ksp):
+        return self.signed.filter(sign=True, signed__in=ksp.keys.all()).count() - 1
+
+    def n_signed(self, ksp):
+        return self.signed_by.filter(sign=True, signer__in=ksp.keys.all()).count() - 1
+
+
 
 class Signature(Model):
     signer = ForeignKey(Key, related_name='signed')
@@ -86,15 +96,6 @@ class KeySigningParty(Model):
         if key not in self.keys.all():
             self.keys.add(key)
             self.save()
-
-    def key_signatures(self, key):
-        return [s.sign for s in key.signed.filter(signed__in=self.keys.all())]
-
-    def key_signer(self, key):
-        return key.signed.filter(sign=True, signed__in=self.keys.all()).count() - 1
-
-    def key_signed(self, key):
-        return key.signed_by.filter(sign=True, signer__in=self.keys.all()).count() - 1
 
     def stats(self):
         return self.signatures().filter(sign=True).count() - self.keys.count(), self.signatures().count() - self.keys.count()

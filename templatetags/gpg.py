@@ -9,17 +9,17 @@ register = template.Library()
 
 @register.filter
 def signatures(key, ksp):
-    return ksp.key_signatures(key)
+    return key.signatures(ksp)
 
 
 @register.filter
 def signer(key, ksp):
-    return ksp.key_signer(key)
+    return key.n_signer(ksp)
 
 
 @register.filter
 def signed(key, ksp):
-    return ksp.key_signed(key)
+    return key.n_signed(ksp)
 
 
 @register.filter
