@@ -43,11 +43,23 @@ class Key(Model):
     def signatures(self, ksp):
         return [s.sign for s in self.signed.filter(signed__in=ksp.keys.all())]
 
+    def signed_ksp(self, ksp):
+        return self.signed.filter(signed__in=ksp.keys.all())
+
+    def signer_ksp(self, ksp):
+        return self.signed_by.filter(signer__in=ksp.keys.all())
+
     def n_signer(self, ksp):
-        return self.signed.filter(sign=True, signed__in=ksp.keys.all()).count() - 1
+        return self.signed_ksp(ksp).filter(sign=True).count() - 1
 
     def n_signed(self, ksp):
-        return self.signed_by.filter(sign=True, signer__in=ksp.keys.all()).count() - 1
+        return self.signer_ksp(ksp).filter(sign=True).count() - 1
+
+    def to_sign(self, ksp):
+        return self.signed_ksp(ksp).filter(sign=False)
+
+    def to_be_signed_by(self, ksp):
+        return self.signer_ksp(ksp).filter(sign=False)
 
 
 
@@ -105,6 +117,6 @@ class KeySigningParty(Model):
             self.absents.remove(key)
             self.keys.add(key)
         for key in self.keys.all():
-            if self.key_signer(key) < 1 or self.key_signed(key) < 1:
+            if key.n_signer(self) < 1 or key.n_signed(self) < 1:
                 self.keys.remove(key)
                 self.absents.add(key)

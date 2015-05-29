@@ -25,7 +25,7 @@
         </tr>
         {% for signer in object.keys.all %}
         <tr>
-            <th>{{ signer.id }}</th>
+            <th><a href="{% url 'gpg:ksp_key' slug=object.slug key_id=signer.id %}">{{ signer.id }}</a></th>
             <th>{{ signer.name }}</th>
             <th>{{ forloop.counter }}</th>
             {% for sign in signer|signatures:object %}
