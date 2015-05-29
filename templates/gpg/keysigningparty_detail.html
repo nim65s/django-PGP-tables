@@ -52,7 +52,7 @@
     <h3>Absents</h3>
     <p class="text-info">N’ont signé personne ou n’ont été signé par personne</p>
     <ol>{% for key in object.absents.all %}
-        <li>{{ key }} ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
+        <li><a href="{% url 'gpg:ksp_key' slug=object.slug key_id=key.id %}">{{ key }}</a> ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
     {% endfor %}</ol>
     {% endif %}
 {% endblock %}
