@@ -62,7 +62,6 @@ class Key(Model):
         return self.signer_ksp(ksp).filter(sign=False)
 
 
-
 class Signature(Model):
     signer = ForeignKey(Key, related_name='signed')
     signed = ForeignKey(Key, related_name='signed_by')
