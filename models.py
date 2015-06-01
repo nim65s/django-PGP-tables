@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from subprocess import check_output
 
 from django.core.urlresolvers import reverse
-from django.db.models import BooleanField, CharField, ForeignKey, ManyToManyField, Model, SlugField, TextField
+from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField
 
 
 class Key(Model):
@@ -81,6 +81,7 @@ class KeySigningParty(Model):
     keys = ManyToManyField(Key)
     absents = ManyToManyField(Key, related_name='absent_to')
     detail = TextField(null=True)
+    date = DateField(null=True)
 
     def __unicode__(self):
         return '%s (%i + %i clefs)' % (self.name, self.keys.count(), self.absents.count())
