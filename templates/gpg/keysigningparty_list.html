@@ -26,6 +26,6 @@ pub   rsa4096/4653CF28 2013-11-24 [expire : 2018-11-23]
 
     {% for object in object_list %}
     <h2><a href="{{ object.get_absolute_url }}">{{ object }}</a></h2>
-        <p>{{ object.detail|safe }}</p>
+        <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}</p>
     {% endfor %}
 {% endblock %}
