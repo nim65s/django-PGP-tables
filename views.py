@@ -9,7 +9,7 @@ from gpg.models import Key, KeySigningParty
 
 class KSPKeyDetailView(DetailView):
     model = KeySigningParty
-    template_name = 'gpg/key_detail.html'
+    template_name = 'gpg/keysigningparty_key_detail.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(KSPKeyDetailView, self).get_context_data(**kwargs)
