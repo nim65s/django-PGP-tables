@@ -11,9 +11,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AlterModelOptions(
+            name='keysigningparty',
+            options={'ordering': ['-date']},
+        ),
         migrations.AddField(
             model_name='keysigningparty',
             name='date',
-            field=models.DateField(null=True),
+            field=models.DateField(null=True, blank=True),
         ),
     ]

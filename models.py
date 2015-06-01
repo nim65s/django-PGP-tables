@@ -81,7 +81,10 @@ class KeySigningParty(Model):
     keys = ManyToManyField(Key)
     absents = ManyToManyField(Key, related_name='absent_to')
     detail = TextField(null=True)
-    date = DateField(null=True)
+    date = DateField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-date']
 
     def __unicode__(self):
         return '%s (%i + %i clefs)' % (self.name, self.keys.count(), self.absents.count())
