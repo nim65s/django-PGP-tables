@@ -16,6 +16,7 @@
     <table>
         <tr><td>clef</td><td>nom</td><td>N°</td><td>a signé {{ key.id }}</td><td>a été signé par {{ key.id }}</td></tr>
         {% for other_key, signed, signer in key|to_do:object %}
+        {% if other_key != key %}
         <tr>
             <th><a href="{% url 'gpg:ksp_key' slug=object.slug key_id=other_key.id %}">{{ other_key.id }}</a></th>
             <th>{{ other_key.name }}</th>
@@ -31,6 +32,7 @@
                 <td class="r">✘</td>
             {% endif %}
         </tr>
+        {% endif %}
         {% endfor %}
     </table>
     <p>Envoyez vos modifications avec:
