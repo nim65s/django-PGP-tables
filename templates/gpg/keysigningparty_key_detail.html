@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% block maincontent %}
-    <h1>Key Signing Party: <a href="{{ object.get_absolute_url }}">{{ object }}</a> / {{ key }}</h1>
+    <h1>Key Signing Party: <a href="{{ object.get_absolute_url }}">{{ object }}</a></h1>
+    <h2>{{ key }}</h2>
     <table>
         <tr><td>clef</td><td>nom</td><td>N°</td><td>a signé {{ key.id }}</td><td>a été signé par {{ key.id }}</td></tr>
         {% for other_key, signed, signer in key|to_do:object %}
