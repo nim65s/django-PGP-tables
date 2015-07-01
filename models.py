@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 from django.core.urlresolvers import reverse
 from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField
@@ -21,8 +21,11 @@ class Key(Model):
         return 'Clef {id} de {name}'.format(**self.__dict__)
 
     def update_infos(self):
-        # call(['gpg2', '--recv-key', self.id])
-        ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
+        try:
+            ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
+        except CalledProcessError:
+            call(['gpg2', '--recv-key', self.id])
+            ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
         self.fingerprint = ret[1].split('=')[1].replace(' ', '')
         for line in ret[2:]:
             if '<' in line and ']' in line:
