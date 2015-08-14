@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
-from subprocess import check_output, CalledProcessError
+from subprocess import CalledProcessError, check_output
 
 from django.core.urlresolvers import reverse
 from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField
@@ -17,7 +13,7 @@ class Key(Model):
     class Meta:
         ordering = ['id']
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Clef {id} de {name}'.format(**self.__dict__)
 
     def update_infos(self):
@@ -74,7 +70,7 @@ class Signature(Model):
         unique_together = ('signer', 'signed')
         ordering = ['signer', 'signed']
 
-    def __unicode__(self):
+    def __str__(self):
         return '{signer_id} → {signed_id}: {sign}'.format(**self.__dict__)
 
 
@@ -89,7 +85,7 @@ class KeySigningParty(Model):
     class Meta:
         ordering = ['-date']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%i + %i clefs)' % (self.name, self.keys.count(), self.absents.count())
 
     def get_absolute_url(self):

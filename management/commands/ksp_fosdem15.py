@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-
 # wget https://ksp.fosdem.org/files/keyring.asc.bz2
 # bunzip2 -d keyring.asc.bz2
 # gpg --import keyring.asc
 # rm keyring.asc
 
-from __future__ import unicode_literals
-
 import requests
 
 from django.core.management.base import BaseCommand
-
 from gpg.models import KeySigningParty
 
 

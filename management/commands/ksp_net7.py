@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 from django.core.management.base import BaseCommand
-
 from gpg.models import KeySigningParty
 
 

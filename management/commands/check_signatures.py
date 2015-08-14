@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 from subprocess import call
 
 from django.core.management.base import BaseCommand
@@ -12,7 +8,7 @@ class Command(BaseCommand):
     help = 'Vérifie les signatures manquantes'
 
     def add_arguments(self, parser):
-        parser.add_argument('ksp', nargs='?', choices=[u'net7', u'fosdem15', u'CdL14', u'fosdem14'])
+        parser.add_argument('ksp', nargs='?', choices=['net7', 'fosdem15', 'CdL14', 'fosdem14'])
 
     def handle(self, *args, **options):
         keys = Key.objects if options['ksp'] is None else KeySigningParty.objects.get(slug=options['ksp']).keys
