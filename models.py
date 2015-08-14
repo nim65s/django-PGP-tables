@@ -1,4 +1,4 @@
-from subprocess import CalledProcessError, check_output
+from subprocess import CalledProcessError, call, check_output
 
 from django.core.urlresolvers import reverse
 from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField
