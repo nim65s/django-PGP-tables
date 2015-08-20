@@ -1,7 +1,9 @@
-{% extends "zinnia/skeleton.html" %}
+{% extends "base.html" %}
 {% load gpg %}
 
 {% block title %}Key Signing Party: {{ object }} / {{ key }}{% endblock %}
+
+{% block navbar-right %}{% endblock %}
 
 {% block style %}
 <style>
