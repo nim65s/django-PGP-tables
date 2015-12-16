@@ -7,7 +7,17 @@
 
 {% block maincontent %}
     <h1>Graph: {{ object }}</h1>
-    <p><a href="{{ object.get_absolute_url }}">Retour</a></p>
+    <p>Engine:
+    <select>
+        <option value="dot">dot</option>
+        <option value="circo">circo</option>
+        <option value="fdp">fdp</option>
+        <option value="neato">neato</option>
+        <option value="osage">osage</option>
+        <option value="twopi">twopi</option>
+    </select>
+    <a href="{{ object.get_absolute_url }}">Retour</a>
+    </p>
     <div id="relations"></div>
 {% endblock %}
 
@@ -26,4 +36,5 @@
     </script>
 
     <script>$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: 'dot'}));</script>
+    <script>$('select').change(function(){$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: $("select option:selected")[0].value}))});</script
 {% endblock %}
