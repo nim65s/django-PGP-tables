@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load gpg %}
+
+{% block title %}Key Signing Party: {{ object }}{% endblock %}
+
+{% block navbar-right %}{% endblock %}
+
+{% block maincontent %}
+    <h1>Graph: {{ object }}</h1>
+    <p><a href="{{ object.get_absolute_url }}">Retour</a></p>
+    <div id="relations"></div>
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/viz.js"></script>
+
+    <script type="txt/vnd.graphviz" id='graphe'>
+        digraph G {
+            {
+                {% for key in object.keys.all %}"{{ key.id }}" [label="{{ key }}"]
+                {% endfor %}
+            }
+            {% for signature in object.uniq_signatures %}{% with dir=signature.dir %}{% if dir %}"{{ signature.signer.id }}" -> "{{ signature.signed.id }}" [dir={{ dir }}];
+            {% endif %}{% endwith %}{% endfor %}
+        }
+    </script>
+
+    <script>$('#relations').html(Viz($('#graphe').html(), 'svg'));</script>
+{% endblock %}

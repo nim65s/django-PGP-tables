@@ -1,7 +1,7 @@
 from subprocess import CalledProcessError, call, check_output
 
 from django.core.urlresolvers import reverse
-from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField
+from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField, F
 
 
 class Key(Model):
@@ -73,6 +73,19 @@ class Signature(Model):
     def __str__(self):
         return '{signer_id} → {signed_id}: {sign}'.format(**self.__dict__)
 
+    def reverse(self):
+        return Signature.objects.get(signed=self.signer, signer=self.signed)
+
+    def dir(self):
+        """ for graphviz """
+        fw, bw = self.sign, self.reverse().sign
+        if fw and bw:
+            return "both"
+        if fw:
+            return "forward"
+        if bw:
+            return "back"
+
 
 class KeySigningParty(Model):
     name = CharField(max_length=40, unique=True)
@@ -94,6 +107,9 @@ class KeySigningParty(Model):
     def signatures(self):
         keys = self.keys.all()
         return Signature.objects.filter(signer__in=keys, signed__in=keys)
+
+    def uniq_signatures(self):
+        return self.signatures().filter(signer__lt=F('signed'))
 
     def add_keys(self, keys):
         for key_id in keys:
