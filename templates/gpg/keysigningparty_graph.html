@@ -25,5 +25,5 @@
         }
     </script>
 
-    <script>$('#relations').html(Viz($('#graphe').html(), 'svg'));</script>
+    <script>$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: 'dot'}));</script>
 {% endblock %}
