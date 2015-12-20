@@ -13,7 +13,7 @@
 
 {% block navbar-right %}{% endblock %}
 
-{% block maincontent %}
+{% block content %}
     <h1>Key Signing Party: {{ object }}</h1>
     <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}.
     <a href="{% url 'gpg:graph' object.slug %}">Voir le Graphe</a></p>
