@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+recursive-include pgp_tables/management *
+recursive-include pgp_tables/migrations *
+recursive-include pgp_tables/templates *
+recursive-include docs *
