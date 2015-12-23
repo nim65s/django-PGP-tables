@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load gpg %}
+{% load pgp_tables %}
 
 {% block title %}Key Signing Party: {{ object }}{% endblock %}
 
@@ -14,7 +14,7 @@
 {% block content %}
     <h1>Key Signing Party: {{ object }}</h1>
     <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}.
-    <a href="{% url 'gpg:graph' object.slug %}">Voir le Graphe</a></p>
+    <a href="{% url 'pgp_tables:graph' object.slug %}">Voir le Graphe</a></p>
     <p class="text-info">Est-ce que la clef de la ligne a signé la clef de la colonne ? (Mise à jour chaque nuit)</p>
     <br>
     <table>
@@ -26,7 +26,7 @@
         </tr>
         {% for signer in object.keys.all %}
         <tr>
-            <th><a href="{% url 'gpg:ksp_key' slug=object.slug key_id=signer.id %}">{{ signer.id }}</a></th>
+            <th><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=signer.id %}">{{ signer.id }}</a></th>
             <th>{{ signer.name }}</th>
             <th>{{ forloop.counter }}</th>
             {% for sign in signer|signatures:object %}
@@ -53,7 +53,7 @@
     <h3>Absents</h3>
     <p class="text-info">N’ont signé personne ou n’ont été signé par personne</p>
     <ol>{% for key in object.absents.all %}
-        <li><a href="{% url 'gpg:ksp_key' slug=object.slug key_id=key.id %}">{{ key }}</a> ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
+        <li><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=key.id %}">{{ key }}</a> ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
     {% endfor %}</ol>
     {% endif %}
 {% endblock %}

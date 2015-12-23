@@ -102,7 +102,7 @@ class KeySigningParty(Model):
         return '%s (%i + %i clefs)' % (self.name, self.keys.count(), self.absents.count())
 
     def get_absolute_url(self):
-        return reverse('gpg:ksp', kwargs={'slug': self.slug})
+        return reverse('pgp_tables:ksp', kwargs={'slug': self.slug})
 
     def signatures(self):
         keys = self.keys.all()

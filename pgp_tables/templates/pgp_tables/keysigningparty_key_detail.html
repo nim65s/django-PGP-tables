@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load gpg %}
+{% load pgp_tables %}
 
 {% block title %}Key Signing Party: {{ object }} / {{ key }}{% endblock %}
 
@@ -19,7 +19,7 @@
         {% for other_key, signed, signer in key|to_do:object %}
         {% if other_key != key %}
         <tr>
-            <th><a href="{% url 'gpg:ksp_key' slug=object.slug key_id=other_key.id %}">{{ other_key.id }}</a></th>
+            <th><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=other_key.id %}">{{ other_key.id }}</a></th>
             <th>{{ other_key.name }}</th>
             <th>{{ forloop.counter }}</th>
             {% if signed.sign %}

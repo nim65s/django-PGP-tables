@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView
-from gpg.models import Key, KeySigningParty
+from .models import Key, KeySigningParty
 
 
 class KSPKeyDetailView(DetailView):

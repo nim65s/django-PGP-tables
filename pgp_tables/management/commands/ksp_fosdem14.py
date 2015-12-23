@@ -6,7 +6,7 @@
 import requests
 
 from django.core.management.base import BaseCommand
-from gpg.models import KeySigningParty
+from pgp_tables.models import KeySigningParty
 
 
 class Command(BaseCommand):

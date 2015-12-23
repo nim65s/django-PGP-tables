@@ -1,9 +1,9 @@
 from django.conf.urls import url
 from django.views.generic import DetailView, ListView
-from gpg.models import KeySigningParty
-from gpg.views import KSPKeyDetailView
+from .models import KeySigningParty
+from .views import KSPKeyDetailView
 
-app_name = 'gpg'
+app_name = 'pgp_tables'
 urlpatterns = [
         url(r'^$', ListView.as_view(model=KeySigningParty), name='ksps'),
         url(r'^(?P<slug>[^/]+)$', DetailView.as_view(model=KeySigningParty), name='ksp'),
