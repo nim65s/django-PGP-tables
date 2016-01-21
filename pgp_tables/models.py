@@ -1,7 +1,8 @@
 from subprocess import CalledProcessError, call, check_output
 
 from django.core.urlresolvers import reverse
-from django.db.models import BooleanField, CharField, DateField, ForeignKey, ManyToManyField, Model, SlugField, TextField, F
+from django.db.models import (F, BooleanField, CharField, DateField, ForeignKey,
+                              ManyToManyField, Model, SlugField, TextField)
 
 
 class Key(Model):
@@ -128,7 +129,8 @@ class KeySigningParty(Model):
             self.save()
 
     def stats(self):
-        return self.signatures().filter(sign=True).count() - self.keys.count(), self.signatures().count() - self.keys.count()
+        signatures, count = self.signatures(), self.keys.count()
+        return signatures.filter(sign=True).count() - count, signatures.count() - count
 
     def remove_absents(self):
         for key in self.absents.all():

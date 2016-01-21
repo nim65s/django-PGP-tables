@@ -5,55 +5,55 @@
 
 {% block style %}
 <style>
-    td, th { border: 1px solid black; min-width: 2em; white-space: nowrap; }
-    table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans Monospace, monospace; }
-    .r { background: red; } .g { background: green; }
+td, th { border: 1px solid black; min-width: 2em; white-space: nowrap; }
+table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans Monospace, monospace; }
+.r { background: red; } .g { background: green; }
 </style>
 {% endblock %}
 
 {% block content %}
-    <h1>Key Signing Party: {{ object }}</h1>
-    <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}.
-    <a href="{% url 'pgp_tables:graph' object.slug %}">Voir le Graphe</a></p>
-    <p class="text-info">Est-ce que la clef de la ligne a signé la clef de la colonne ? (Mise à jour chaque nuit)</p>
-    <br>
-    <table>
-        <tr>
-            <td>clef</td><td>nom</td><td>N°</td>
-            {% for k in object.keys.all %}<th>{{ forloop.counter }}</th>{% endfor %}
-            <th>signer</th>
-            <th>signed</th>
-        </tr>
-        {% for signer in object.keys.all %}
-        <tr>
-            <th><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=signer.id %}">{{ signer.id }}</a></th>
-            <th>{{ signer.name }}</th>
-            <th>{{ forloop.counter }}</th>
-            {% for sign in signer|signatures:object %}
-                {% if forloop.counter == forloop.parentloop.counter %}
-                    <td></td>
-                {% else %}
-                    {% if sign %}
-                        <td class="g">✔</td>
-                    {% else %}
-                        <td class="r">✘</td>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-            <td>{{ signer|signer:object }}</td>
-            <td>{{ signer|signed:object }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>Signatures : {{ object|stats }}</p>
-    <p>Envoyez vos modifications avec:
-        <pre>gpg --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
-    </p>
-    {% if object.absents.exists %}
-    <h3>Absents</h3>
-    <p class="text-info">N’ont signé personne ou n’ont été signé par personne</p>
-    <ol>{% for key in object.absents.all %}
-        <li><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=key.id %}">{{ key }}</a> ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
-    {% endfor %}</ol>
+<h1>Key Signing Party: {{ object }}</h1>
+<p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}.
+<a href="{% url 'pgp_tables:graph' object.slug %}">Voir le Graphe</a></p>
+<p class="text-info">Est-ce que la clef de la ligne a signé la clef de la colonne ? (Mise à jour chaque nuit)</p>
+<br>
+<table>
+  <tr>
+    <td>clef</td><td>nom</td><td>N°</td>
+    {% for k in object.keys.all %}<th>{{ forloop.counter }}</th>{% endfor %}
+    <th>signer</th>
+    <th>signed</th>
+  </tr>
+  {% for signer in object.keys.all %}
+  <tr>
+    <th><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=signer.id %}">{{ signer.id }}</a></th>
+    <th>{{ signer.name }}</th>
+    <th>{{ forloop.counter }}</th>
+    {% for sign in signer|signatures:object %}
+    {% if forloop.counter == forloop.parentloop.counter %}
+    <td></td>
+    {% else %}
+    {% if sign %}
+    <td class="g">✔</td>
+    {% else %}
+    <td class="r">✘</td>
     {% endif %}
+    {% endif %}
+    {% endfor %}
+    <td>{{ signer|signer:object }}</td>
+    <td>{{ signer|signed:object }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<p>Signatures : {{ object|stats }}</p>
+<p>Envoyez vos modifications avec:
+<pre>gpg --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
+</p>
+{% if object.absents.exists %}
+<h3>Absents</h3>
+<p class="text-info">N’ont signé personne ou n’ont été signé par personne</p>
+<ol>{% for key in object.absents.all %}
+  <li><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=key.id %}">{{ key }}</a> ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
+  {% endfor %}</ol>
+{% endif %}
 {% endblock %}

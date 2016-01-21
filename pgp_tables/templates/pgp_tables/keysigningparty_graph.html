@@ -4,26 +4,26 @@
 {% block title %}Key Signing Party: {{ object }}{% endblock %}
 
 {% block content %}
-    <h1>Graph: {{ object }}</h1>
-    <p>Engine:
-    <select>
-        <option value="dot">dot</option>
-        <option value="circo">circo</option>
-        <option value="fdp">fdp</option>
-        <option value="neato">neato</option>
-        <option value="osage">osage</option>
-        <option value="twopi">twopi</option>
-    </select>
-    <a href="{{ object.get_absolute_url }}">Retour</a>
-    </p>
-    <div id="relations"></div>
+<h1>Graph: {{ object }}</h1>
+<p>Engine:
+<select>
+  <option value="dot">dot</option>
+  <option value="circo">circo</option>
+  <option value="fdp">fdp</option>
+  <option value="neato">neato</option>
+  <option value="osage">osage</option>
+  <option value="twopi">twopi</option>
+</select>
+<a href="{{ object.get_absolute_url }}">Retour</a>
+</p>
+<div id="relations"></div>
 {% endblock %}
 
 {% block js %}
-    <script src="/static/js/viz.js"></script>
+<script src="/static/js/viz.js"></script>
 
-    <script type="txt/vnd.graphviz" id='graphe'>
-        digraph G {
+<script type="txt/vnd.graphviz" id='graphe'>
+digraph G {
             {
                 {% for key in object.keys.all %}"{{ key.id }}" [label="{{ key }}"]
                 {% endfor %}
@@ -31,8 +31,8 @@
             {% for signature in object.uniq_signatures %}{% with dir=signature.dir %}{% if dir %}"{{ signature.signer.id }}" -> "{{ signature.signed.id }}" [dir={{ dir }}];
             {% endif %}{% endwith %}{% endfor %}
         }
-    </script>
+</script>
 
-    <script>$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: 'dot'}));</script>
-    <script>$('select').change(function(){$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: $("select option:selected")[0].value}))});</script
+<script>$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: 'dot'}));</script>
+<script>$('select').change(function(){$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: $("select option:selected")[0].value}))});</script
 {% endblock %}

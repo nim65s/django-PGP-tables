@@ -4,29 +4,29 @@
 {% block title %}Key Signing Parties{% endblock %}
 
 {% block content %}
-    <h1>My Fingerprint</h1>
+<h1>My Fingerprint</h1>
 
-    <p class="text-info">(Main UIDs)</p>
-    <pre>
+<p class="text-info">(Main UIDs)</p>
+<pre>
 pub   rsa4096/4653CF28 2013-11-24 [expire : 2018-11-23]
  Empreinte de la clef = 9B1A 7906 5D2F 2B80 6C8A  5A1C 7D2A CDAF 4653 CF28
  uid       [ultimate] Guilhem Saurel (Nim) {{ "guilhem@saurel.me"|email:request }}
  uid       [ultimate] Guilhem Saurel (Nim) {{ "guilhem.saurel@laas.fr"|email:request }}
  uid       [ultimate] Guilhem Saurel (Nim) {{ "guilhem.saurel@gmail.com"|email:request }}
  sub   rsa4096/C5D1A4A2 2013-11-24 [expire : 2018-11-23]
-    </pre>
-    <form method="get" action="http://pgp.cs.uu.nl/mk_path.cgi">
-        your key id :
-        <input type=text    name=from   size="10">
-        <input type=hidden  name=to     value="4653CF28">
-        <input type=submit  name=paths  vaLUE="find trust paths to me">
-        <input type=reset   name=RESET  value="reset">
-    </form>
+</pre>
+<form method="get" action="http://pgp.cs.uu.nl/mk_path.cgi">
+  your key id :
+  <input type=text    name=from   size="10">
+  <input type=hidden  name=to     value="4653CF28">
+  <input type=submit  name=paths  vaLUE="find trust paths to me">
+  <input type=reset   name=RESET  value="reset">
+</form>
 
-    <h1>Key Signing Parties</h1>
+<h1>Key Signing Parties</h1>
 
-    {% for object in object_list %}
-    <h2><a href="{{ object.get_absolute_url }}">{{ object }}</a></h2>
-        <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}</p>
-    {% endfor %}
+{% for object in object_list %}
+<h2><a href="{{ object.get_absolute_url }}">{{ object }}</a></h2>
+<p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}</p>
+{% endfor %}
 {% endblock %}

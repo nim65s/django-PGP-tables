@@ -1,6 +1,7 @@
 from subprocess import call
 
 from django.core.management.base import BaseCommand
+
 from pgp_tables.models import Key, KeySigningParty
 
 

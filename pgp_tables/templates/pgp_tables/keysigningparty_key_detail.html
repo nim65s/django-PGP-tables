@@ -5,38 +5,38 @@
 
 {% block style %}
 <style>
-    td, th { border: 1px solid black; min-width: 2em; white-space: nowrap; }
-    table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans Monospace, monospace; }
-    .r { background: red; } .g { background: green; }
+td, th { border: 1px solid black; min-width: 2em; white-space: nowrap; }
+table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans Monospace, monospace; }
+.r { background: red; } .g { background: green; }
 </style>
 {% endblock %}
 
 {% block content %}
-    <h1>Key Signing Party: <a href="{{ object.get_absolute_url }}">{{ object }}</a></h1>
-    <h2>{{ key }}</h2>
-    <table>
-        <tr><td>clef</td><td>nom</td><td>N°</td><td>a signé {{ key.id }}</td><td>a été signé par {{ key.id }}</td></tr>
-        {% for other_key, signed, signer in key|to_do:object %}
-        {% if other_key != key %}
-        <tr>
-            <th><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=other_key.id %}">{{ other_key.id }}</a></th>
-            <th>{{ other_key.name }}</th>
-            <th>{{ forloop.counter }}</th>
-            {% if signed.sign %}
-                <td class="g">✔</td>
-            {% else %}
-                <td class="r">✘</td>
-            {% endif %}
-            {% if signer.sign %}
-                <td class="g">✔</td>
-            {% else %}
-                <td class="r">✘</td>
-            {% endif %}
-        </tr>
-        {% endif %}
-        {% endfor %}
-    </table>
-    <p>Envoyez vos modifications avec:
-        <pre>gpg --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
-    </p>
+<h1>Key Signing Party: <a href="{{ object.get_absolute_url }}">{{ object }}</a></h1>
+<h2>{{ key }}</h2>
+<table>
+  <tr><td>clef</td><td>nom</td><td>N°</td><td>a signé {{ key.id }}</td><td>a été signé par {{ key.id }}</td></tr>
+  {% for other_key, signed, signer in key|to_do:object %}
+  {% if other_key != key %}
+  <tr>
+    <th><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=other_key.id %}">{{ other_key.id }}</a></th>
+    <th>{{ other_key.name }}</th>
+    <th>{{ forloop.counter }}</th>
+    {% if signed.sign %}
+    <td class="g">✔</td>
+    {% else %}
+    <td class="r">✘</td>
+    {% endif %}
+    {% if signer.sign %}
+    <td class="g">✔</td>
+    {% else %}
+    <td class="r">✘</td>
+    {% endif %}
+  </tr>
+  {% endif %}
+  {% endfor %}
+</table>
+<p>Envoyez vos modifications avec:
+<pre>gpg --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
+</p>
 {% endblock %}
