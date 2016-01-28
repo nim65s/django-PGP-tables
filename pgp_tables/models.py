@@ -9,7 +9,7 @@ class Key(Model):
     id = CharField(max_length=8, primary_key=True)
     fingerprint = CharField(max_length=40)
     name = CharField(max_length=100)
-    mail = CharField(max_length=100)
+    mail = CharField(max_length=100, null=True)
 
     class Meta:
         ordering = ['id']
@@ -27,10 +27,15 @@ class Key(Model):
         for line in ret[2:]:
             if '<' in line and ']' in line:
                 name, mail = line.split(']')[1].split('<')
+                self.name, self.mail = name.strip(), mail[:-1]
                 break
         else:
-            raise ValueError('la clef %s n’a pas de mail ?' % self.id)
-        self.name, self.mail = name.strip(), mail[:-1]
+            for line in ret[2:]:
+                if line.split()[0] == 'uid':
+                    self.name = ' '.join(line.split()[1:])
+                    break
+            else:
+                raise ValueError('la clef %s n’a pas de mail, et pas de nom ?' % self.id)
         self.save()
 
     def check_signatures(self):
