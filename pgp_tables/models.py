@@ -22,7 +22,12 @@ class Key(Model):
         ordering = ['id']
 
     def __str__(self):
-        return 'Clef {id} de {name}'.format(**self.__dict__)
+        fmt = 'Clef {id} de {name}'
+        if self.comment is not None:
+            fmt += ' ({comment})'
+        if not self.valid:
+            fmt = 'INVALID ' + fmt
+        return fmt.format(**self.__dict__)
 
     def update_infos(self):
         try:
