@@ -1,15 +1,22 @@
+from datetime import datetime
 from subprocess import CalledProcessError, call, check_output
 
 from django.core.urlresolvers import reverse
 from django.db.models import (F, BooleanField, CharField, DateField, ForeignKey,
-                              ManyToManyField, Model, SlugField, TextField)
+                              IntegerField, ManyToManyField, Model, SlugField, TextField)
 
 
 class Key(Model):
     id = CharField(max_length=8, primary_key=True)
     fingerprint = CharField(max_length=40)
     name = CharField(max_length=100)
+    comment = CharField(max_length=100, null=True)
     mail = CharField(max_length=100, null=True)
+    creation = DateField(null=True)
+    expiration = DateField(null=True)
+    valid = BooleanField(default=True)
+    length = IntegerField(null=True)
+    algorithm = IntegerField(null=True)
 
     class Meta:
         ordering = ['id']
@@ -19,27 +26,54 @@ class Key(Model):
 
     def update_infos(self):
         try:
-            ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
+            ret = check_output(['gpg2', '--with-colons', '--fingerprint', self.id])
         except CalledProcessError:
             call(['gpg2', '--recv-key', self.id])
-            ret = check_output(['gpg2', '--fingerprint', self.id]).decode('utf-8').split('\n')
-        self.fingerprint = ret[1].split('=')[1].replace(' ', '')
-        for line in ret[2:]:
-            if '<' in line and ']' in line:
-                name, mail = line.split(']')[1].split('<')
+            ret = check_output(['gpg2', '--with-colons', '--fingerprint', self.id])
+        ret = [l.split(':') for l in ret.decode().split('\n')]
+        for line in ret:
+            if line[0] == 'fpr':
+                self.fingerprint = line[9]
+                break
+        for line in ret:
+            if line[0] == 'pub':
+                self.creation = datetime.fromtimestamp(int(line[5])).date()
+                if line[6]:
+                    self.expiration = datetime.fromtimestamp(int(line[6])).date()
+                if line[1] in 'oidren':  # GnuPG/doc/DETAILS
+                    self.valid = False
+                if line[2]:
+                    self.length = int(line[2])
+                if line[3]:
+                    self.algorithm = int(line[3])
+                break
+        for line in ret:
+            if line[0] == 'uid' and '<' in line[9] and '>' in line[9]:
+                name, mail = line[9].split('<')
+                if '(' in name:
+                    name, comment = name.split('(')
+                    self.comment = comment.strip()[:-1]
                 self.name, self.mail = name.strip(), mail[:-1]
                 break
         else:
-            for line in ret[2:]:
-                if line.split()[0] == 'uid':
-                    self.name = ' '.join(line.split()[1:])
+            for line in ret:
+                if line[0] == 'uid':
+                    name = line[9]
+                    if '(' in name:
+                        name, comment = name.split('(')
+                        self.comment = comment.strip()[:-1]
+                    self.name = name.strip()
                     break
             else:
                 raise ValueError('la clef %s n’a pas de mail, et pas de nom ?' % self.id)
         self.save()
 
     def check_signatures(self):
-        ret = check_output(['gpg2', '--list-sigs', self.id]).decode('utf-8')
+        try:
+            ret = check_output(['gpg2', '--list-sigs', self.id]).decode()
+        except CalledProcessError:
+            call(['gpg2', '--recv-key', self.id])
+            ret = check_output(['gpg2', '--list-sigs', self.id]).decode()
         for signature in self.signed_by.filter(sign=False):
             if signature.signer_id in ret:
                 signature.sign = True

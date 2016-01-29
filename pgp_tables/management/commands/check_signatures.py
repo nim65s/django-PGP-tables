@@ -10,9 +10,11 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('ksp', nargs='?', choices=['net7', 'fosdem15', 'CdL14', 'fosdem14'])
+        parser.add_argument('-r', '--refresh', action='store_true', help='Refresh Keys')
 
     def handle(self, *args, **options):
         keys = Key.objects if options['ksp'] is None else KeySigningParty.objects.get(slug=options['ksp']).keys
-        call(['gpg2', '--refresh-keys'] + list(keys.values_list('id', flat=True)))
+        if options['refresh']:
+            call(['gpg2', '--refresh-keys'] + list(keys.values_list('id', flat=True)))
         for key in keys.all():
             key.check_signatures()
