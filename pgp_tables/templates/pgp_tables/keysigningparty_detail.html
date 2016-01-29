@@ -21,8 +21,9 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
   <tr>
     <td>clef</td><td>nom</td><td>N°</td>
     {% for k in object.keys.all %}<th>{{ forloop.counter }}</th>{% endfor %}
-    <th>signer</th><th>signed</th><th>comment</th><th>creation</th><th>expiration</th><th>valid</th><th>algorithm</th><th>length</th>
+    <th>signer</th><th>signed</th><th>creation</th><th>expiration</th><th>valid</th><th>algorithm</th><th>length</th>
     {% if request.user.is_authenticated %}<th>email</th>{% endif %}
+    <th>comment</th>
   </tr>
   {% for signer in object.keys.all %}
   <tr>
@@ -42,13 +43,13 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
     {% endfor %}
     <td>{{ signer|signer:object }}</td>
     <td>{{ signer|signed:object }}</td>
-    <td>{{ signer.comment }}</td>
     <td>{{ signer.creation }}</td>
     <td>{{ signer.expiration }}</td>
     <td>{{ signer.valid|yesno:"✔,✘" }}</td>
     <td>{{ signer.algorithm }}</td>
     <td>{{ signer.length }}</td>
-    {% if request.user.is_authenticated %}<td>{{ signer.email }}</td>{% endif %}
+    {% if request.user.is_authenticated %}<td>{{ signer.mail }}</td>{% endif %}
+    <td>{{ signer.comment }}</td>
   </tr>
   {% endfor %}
 </table>
