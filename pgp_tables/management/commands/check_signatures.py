@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Vérifie les signatures manquantes'
 
     def add_arguments(self, parser):
-        parser.add_argument('ksp', nargs='?', choices=['net7', 'fosdem15', 'CdL14', 'fosdem14'])
+        parser.add_argument('ksp', nargs='?', choices=KeySigningParty.objects.values_list('slug', flat=True))
         parser.add_argument('-r', '--refresh', action='store_true', help='Refresh Keys')
 
     def handle(self, *args, **options):
