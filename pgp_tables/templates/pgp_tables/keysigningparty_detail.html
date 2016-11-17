@@ -46,7 +46,7 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
     <td>{{ signer.creation }}</td>
     <td>{{ signer.expiration }}</td>
     <td>{{ signer.valid|yesno:"✔,✘" }}</td>
-    <td>{{ signer.algorithm }}</td>
+    <td>{{ signer.algorithm_name }}</td>
     <td>{{ signer.length }}</td>
     {% if request.user.is_authenticated %}<td>{{ signer.mail }}</td>{% endif %}
     <td>{{ signer.comment }}</td>

@@ -2,8 +2,10 @@ from datetime import datetime
 from subprocess import CalledProcessError, call, check_output
 
 from django.core.urlresolvers import reverse
-from django.db.models import (F, BooleanField, CharField, DateField, ForeignKey,
+from django.db.models import (BooleanField, CharField, DateField, F, ForeignKey,
                               IntegerField, ManyToManyField, Model, SlugField, TextField)
+
+ALGO = {1: 'RSA', 2: 'RSA', 3: 'RSA', 16: 'ElGamal', 17: 'DSA', 18: 'EC', 19: 'ECDSA', 20: 'ElGamal', 21: 'DH'}
 
 
 class Key(Model):
@@ -184,3 +186,6 @@ class KeySigningParty(Model):
             if key.n_signer(self) < 1 or key.n_signed(self) < 1:
                 self.keys.remove(key)
                 self.absents.add(key)
+
+    def algorithm_name(self):
+        return ALGO[self.algorithm]
