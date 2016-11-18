@@ -4,7 +4,9 @@ from subprocess import CalledProcessError, call, check_output
 from django.core.urlresolvers import reverse
 from django.db.models import (BooleanField, CharField, DateField, F, ForeignKey,
                               IntegerField, ManyToManyField, Model, SlugField, TextField)
+from django.db.models.aggregates import Count
 
+# https://tools.ietf.org/html/rfc4880#section-9.1
 ALGO = {1: 'RSA', 2: 'RSA', 3: 'RSA', 16: 'ElGamal', 17: 'DSA', 18: 'EC', 19: 'ECDSA', 20: 'ElGamal', 21: 'DH'}
 
 
@@ -189,3 +191,13 @@ class KeySigningParty(Model):
 
     def algorithm_name(self):
         return ALGO[self.algorithm]
+
+    def count_field(self, field):
+        return self.keys.values(field).annotate(count=Count(field)).order_by('count')
+
+    def algorithms(self):
+        return [(ALGO[algorithm['algorithm']], algorithm['count']) for algorithm in self.count_field('algorithm')]
+
+    def key_lengths(self):
+        return {ALGO[algo]: [(length['length'], length['count']) for length in count('length').filter(algorithm=algo)]
+                for algo in self.keys.order_by('algorithm').distinct('algorithm').values_list('algorithm', flat=True)}

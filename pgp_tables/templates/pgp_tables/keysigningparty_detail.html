@@ -54,10 +54,11 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
   </tr>
   {% endfor %}
 </table>
-<p>Signatures : {{ object|stats }}</p>
+
 <p>Envoyez vos modifications avec:
 <pre>gpg --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
 </p>
+
 {% if object.absents.exists %}
 <h3>Absents</h3>
 <p class="text-info">N’ont signé personne ou n’ont été signé par personne</p>
@@ -65,5 +66,36 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
   <li><a href="{% url 'pgp_tables:ksp_key' slug=object.slug key_id=key.id %}">{{ key }}</a> ({{ key|signer:object|add:1 }} / {{ key|signed:object|add:1 }})</li>
   {% endfor %}</ol>
 {% endif %}
+
+<h3>Stats</h3>
+<p>Signatures : {{ object|stats }}</p>
+
+<div id="algorithmschart" style="width: 100%; height: 500px;"></div>
+
 {% endcache %}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+      ['Algorithm', 'Keys'],
+      {% for algorithm, count in object.algorithms %}
+      ['{{ algorithm }}', {{ count }}],
+      {% endfor %}
+    ]);
+
+    var options = {
+      title: 'Public-Key Algorithms'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('algorithmschart'));
+
+    chart.draw(data, options);
+  }
+</script>
 {% endblock %}
