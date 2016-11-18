@@ -12,7 +12,7 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
 {% endblock %}
 
 {% block content %}
-{% cache 31536000 'ksp_detail' object.slug %}
+{% cache 31536000 'ksp_detail' object.slug request.user.is_authenticated %}
 <h1>Key Signing Party: {{ object }}</h1>
 <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}.
 <a href="{% url 'pgp_tables:graph' object.slug %}">Voir le Graphe</a></p>
