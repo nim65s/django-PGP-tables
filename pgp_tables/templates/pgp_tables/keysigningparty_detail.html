@@ -70,32 +70,30 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
 <h3>Stats</h3>
 <p>Signatures : {{ object|stats }}</p>
 
-<div id="algorithmschart" style="width: 100%; height: 500px;"></div>
+<canvas id="myChart" width="400" height="400"></canvas>
 
 {% endcache %}
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
-
-    var data = google.visualization.arrayToDataTable([
-      ['Algorithm', 'Keys'],
-      {% for algorithm, count in object.algorithms %}
-      ['{{ algorithm }}', {{ count }}],
-      {% endfor %}
-    ]);
-
-    var options = {
-      title: 'Public-Key Algorithms'
-    };
-
-    var chart = new google.visualization.PieChart(document.getElementById('algorithmschart'));
-
-    chart.draw(data, options);
-  }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: [{% for label, count in object.algo_stats %}
+            "{{ label }}",
+            {% endfor %}
+        ],
+            datasets: [{
+                data: [{% for label, count in object.algo_stats %} {{ count }},{% endfor %}],
+                backgroundColor: ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+                hoverBackgroundColor: ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360']
+            }]
+    },
+    options: {}
+});
 </script>
+
 {% endblock %}

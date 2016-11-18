@@ -109,6 +109,9 @@ class Key(Model):
     def to_be_signed_by(self, ksp):
         return self.signer_ksp(ksp).filter(sign=False)
 
+    def algorithm_name(self):
+        return ALGO[self.algorithm]
+
 
 class Signature(Model):
     signer = ForeignKey(Key, related_name='signed')
@@ -189,15 +192,6 @@ class KeySigningParty(Model):
                 self.keys.remove(key)
                 self.absents.add(key)
 
-    def algorithm_name(self):
-        return ALGO[self.algorithm]
-
-    def count_field(self, field):
-        return self.keys.values(field).annotate(count=Count(field)).order_by('count')
-
-    def algorithms(self):
-        return [(ALGO[algorithm['algorithm']], algorithm['count']) for algorithm in self.count_field('algorithm')]
-
-    def key_lengths(self):
-        return {ALGO[algo]: [(length['length'], length['count']) for length in count('length').filter(algorithm=algo)]
-                for algo in self.keys.order_by('algorithm').distinct('algorithm').values_list('algorithm', flat=True)}
+    def algo_stats(self):
+        return sorted([('%s %i' % (ALGO[s['algorithm']], s['length']), s['count'])
+                for s in self.keys.values('algorithm', 'length').annotate(count=Count('algorithm')).order_by()])
