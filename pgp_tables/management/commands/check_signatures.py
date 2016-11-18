@@ -1,7 +1,6 @@
 from subprocess import call
 
 from django.core.cache import cache
-from django.core.cache.utils import make_template_fragment_key
 from django.core.management.base import BaseCommand
 
 from pgp_tables.models import Key, KeySigningParty
@@ -26,6 +25,4 @@ class Command(BaseCommand):
             key.check_signatures()
 
         # Invalidate corresponding caches
-        for ksp in [k.slug for k in all_ksps()] if options['ksp'] is None else [options['slug']]
-            for template in ['ksp_detail', 'ksp_graph']:
-                cache.delete(make_template_fragment_key(template, [ksp])
+        cache.clear()
