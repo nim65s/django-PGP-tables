@@ -21,9 +21,3 @@ def signed(key, ksp):
 @register.filter
 def to_do(key, ksp):
     return zip(ksp.keys.all(), key.signed_ksp(ksp), key.signer_ksp(ksp))
-
-
-@register.filter
-def stats(ksp):
-    sigs, sigs_max = ksp.stats()
-    return '%i / %i (%i%%)' % (sigs, sigs_max, 100 * sigs / sigs_max)

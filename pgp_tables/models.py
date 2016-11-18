@@ -181,7 +181,9 @@ class KeySigningParty(Model):
 
     def stats(self):
         signatures, count = self.signatures(), self.keys.count()
-        return signatures.filter(sign=True).count() - count, signatures.count() - count
+        sig_now = signatures.filter(sign=True).count() - count
+        sig_max = signatures.count() - count
+        return sig_now, sig_max, int(100 * sig_now / sig_max)
 
     def remove_absents(self):
         for key in self.absents.all():
