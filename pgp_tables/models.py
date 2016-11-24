@@ -190,7 +190,7 @@ class KeySigningParty(Model):
             self.absents.remove(key)
             self.keys.add(key)
         for key in self.keys.all():
-            if key.n_signer(self) < 1 or key.n_signed(self) < 1:
+            if not key.valid or key.n_signer(self) < 1 or key.n_signed(self) < 1:
                 self.keys.remove(key)
                 self.absents.add(key)
 
