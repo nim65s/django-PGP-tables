@@ -84,7 +84,7 @@ class Key(Model):
             call(['gpg2', '--recv-key', self.id])
             ret = check_output(['gpg2', '--list-sigs', self.id]).decode()
         for signature in self.signed_by.filter(sign=False):
-            if signature.signer_id in ret:
+            if signature.signer_id in ret.split('\n'):
                 signature.sign = True
                 signature.save()
 
@@ -195,5 +195,5 @@ class KeySigningParty(Model):
                 self.absents.add(key)
 
     def algo_stats(self):
-        return sorted([('%s %i' % (ALGO[s['algorithm']], s['length']), s['count'])
-                for s in self.keys.values('algorithm', 'length').annotate(count=Count('algorithm')).order_by()])
+        return sorted([('%s %i' % (ALGO[s['algorithm']], s['length']), s['count']) for s in
+                       self.keys.values('algorithm', 'length').annotate(count=Count('algorithm')).order_by()])
