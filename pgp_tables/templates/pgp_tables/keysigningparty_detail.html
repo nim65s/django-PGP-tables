@@ -16,7 +16,7 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
 <h1>Key Signing Party: {{ object }}</h1>
 <p>{{ object.detail|safe }}{% if object.date %}, le {{ object.date }}{% endif %}.
 <a href="{% url 'pgp_tables:graph' object.slug %}">Voir le Graphe</a></p>
-<p class="text-info">Est-ce que la clef de la ligne a signé la clef de la colonne ? (Mise à jour chaque nuit)</p>
+<p class="text-info">Est-ce que la clef de la ligne a signé la clef de la colonne ? (Mise à jour chaque semaine)</p>
 <br>
 <table>
   <tr>
