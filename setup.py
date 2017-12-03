@@ -13,7 +13,7 @@ setup(
     version='1.0.0',
     packages=['pgp_tables'],
     install_requires=[
-        'Django',
+        'django',
     ],
     include_package_data=True,
     license='GPL License',
