@@ -1,10 +1,11 @@
 from datetime import datetime
 from subprocess import CalledProcessError, call, check_output
 
-from django.core.urlresolvers import reverse
+from django.db import models
 from django.db.models import (BooleanField, CharField, DateField, F, ForeignKey,
                               IntegerField, ManyToManyField, Model, SlugField, TextField)
 from django.db.models.aggregates import Count
+from django.urls import reverse
 
 # https://tools.ietf.org/html/rfc4880#section-9.1
 ALGO = {1: 'RSA', 2: 'RSA', 3: 'RSA', 16: 'ElGamal', 17: 'DSA', 18: 'EC', 19: 'ECDSA', 20: 'ElGamal', 21: 'DH'}
@@ -114,8 +115,8 @@ class Key(Model):
 
 
 class Signature(Model):
-    signer = ForeignKey(Key, related_name='signed')
-    signed = ForeignKey(Key, related_name='signed_by')
+    signer = ForeignKey(Key, related_name='signed', on_delete=models.CASCADE)
+    signed = ForeignKey(Key, related_name='signed_by', on_delete=models.CASCADE)
     sign = BooleanField(default=False)
 
     class Meta:
