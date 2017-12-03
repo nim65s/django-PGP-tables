@@ -1,0 +1,14 @@
+language: python
+python:
+  - 3.6
+install:
+  - pip install -r requirements.txt flake8 python-coveralls
+before_script:
+  - gpg --recv-keys 7D2ACDAF4653CF28
+  - gpg --recv-keys $(gpg --with-colons --list-sigs 7D2ACDAF4653CF28|grep '^sig'|cut -d':' -f5|sort -u|head -n 10)
+script:
+  - ./manage.py migrate
+  - coverage run manage.py test
+  - flake8 .
+after_success:
+  - coveralls
