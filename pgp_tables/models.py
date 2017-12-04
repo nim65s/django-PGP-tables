@@ -85,7 +85,7 @@ class Key(Model):
             call(['gpg2', '--recv-key', self.id])
             ret = check_output(['gpg2', '--list-sigs', self.id]).decode()
         for signature in self.signed_by.filter(sign=False):
-            if signature.signer_id in ret.split('\n'):
+            if signature.signer_id in ret:
                 signature.sign = True
                 signature.save()
 
