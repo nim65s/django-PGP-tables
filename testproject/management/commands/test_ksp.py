@@ -14,6 +14,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ksp = KeySigningParty.objects.create(name='KSP de test', slug='test_ksp', date=date.today())
-        output = check_output(['gpg', '--with-colons', '--list-sigs', INITIAL_KEY]).decode().split('\n')
+        output = check_output(['gpg2', '--with-colons', '--list-sigs', INITIAL_KEY]).decode().split('\n')
         key_ids = [INITIAL_KEY] + sorted(set(l.split(':')[4] for l in output if l.startswith('sig')))[:KEYS - 1]
         ksp.add_keys(key_ids)

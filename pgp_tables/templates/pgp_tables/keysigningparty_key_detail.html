@@ -37,7 +37,7 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
   {% endfor %}
 </table>
 <p>Envoyez vos modifications avec:
-<pre>gpg --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre><br>
+<pre>gpg2 --send-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre><br>
 Plus de stats sur cette clef:
 <a href="http://pgp.cs.uu.nl/mk_path.cgi?STAT={{ key.id }}&STATS=statistics">pgp.cs.uu.nl</a>
 </p>

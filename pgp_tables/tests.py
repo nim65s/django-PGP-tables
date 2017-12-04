@@ -55,5 +55,3 @@ class TestKSP(TestCase):
         self.assertEqual(req.status_code, 200)
         req = self.client.get(reverse('pgp_tables:ksp_key', args=[ksp.slug, me.id]))
         self.assertEqual(req.status_code, 200)
-
-        # test management commands

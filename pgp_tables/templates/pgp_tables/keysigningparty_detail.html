@@ -56,7 +56,7 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
 </table>
 
 <p>Recevez vos modifications avec:
-<pre>gpg ---recv-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
+<pre>gpg2 ---recv-keys{% for key in object.keys.all %} {{ key.id }}{% endfor %}</pre>
 </p>
 
 {% if object.absents.exists %}
