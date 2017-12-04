@@ -36,9 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'testproject',
     'pgp_tables',
+    'ndh',
 ]
 
 MIDDLEWARE = [
@@ -120,3 +122,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SITE_ID = 1

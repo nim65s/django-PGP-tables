@@ -1,1 +1,2 @@
 django
+git+https://github.com/nim65s/ndh.git#egg=ndh
