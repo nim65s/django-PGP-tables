@@ -12,7 +12,7 @@ ALGO = {1: 'RSA', 2: 'RSA', 3: 'RSA', 16: 'ElGamal', 17: 'DSA', 18: 'EC', 19: 'E
 
 
 class Key(Model):
-    id = CharField(max_length=8, primary_key=True)
+    id = CharField(max_length=16, primary_key=True)
     fingerprint = CharField(max_length=40)
     name = CharField(max_length=100)
     comment = CharField(max_length=100, null=True)
@@ -27,12 +27,12 @@ class Key(Model):
         ordering = ['id']
 
     def __str__(self):
-        fmt = 'Clef {id} de {name}'
+        ret = f'Clef {self.id} de {self.name}'
         if self.comment is not None:
-            fmt += ' ({comment})'
+            ret += ' ({self.comment})'
         if not self.valid:
-            fmt = 'INVALID ' + fmt
-        return fmt.format(**self.__dict__)
+            ret = 'INVALID ' + ret
+        return ret
 
     def update_infos(self):
         try:
@@ -75,7 +75,7 @@ class Key(Model):
                     self.name = name.strip()
                     break
             else:
-                raise ValueError('la clef %s n’a pas de mail, et pas de nom ?' % self.id)
+                raise ValueError(f'la clef {self.id} n’a pas de mail, et pas de nom ?')
         self.save()
 
     def check_signatures(self):
@@ -124,7 +124,7 @@ class Signature(Model):
         ordering = ['signer', 'signed']
 
     def __str__(self):
-        return '{signer_id} → {signed_id}: {sign}'.format(**self.__dict__)
+        return f'{self.signer_id} → {self.signed_id}: {self.sign}'
 
     def reverse(self):
         return Signature.objects.get(signed=self.signer, signer=self.signed)
@@ -152,7 +152,7 @@ class KeySigningParty(Model):
         ordering = ['-date']
 
     def __str__(self):
-        return '%s (%i + %i clefs)' % (self.name, self.keys.count(), self.absents.count())
+        return f'{self.name} ({self.keys.count()} + {self.absents.count()} clefs)'
 
     def get_absolute_url(self):
         return reverse('pgp_tables:ksp', kwargs={'slug': self.slug})
