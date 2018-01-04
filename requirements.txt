@@ -5,6 +5,7 @@
 #    pip-compile --output-file requirements.txt requirements.in
 #
 git+https://github.com/nim65s/django-autoslug#egg=django-autoslug
-django==2.0
+django==2.0.1
+django-bootstrap3==9.1.0
 git+https://github.com/nim65s/ndh.git#egg=ndh
 pytz==2017.3              # via django
