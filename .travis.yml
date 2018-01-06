@@ -4,8 +4,9 @@ python:
 install:
   - pip install -r requirements.txt flake8 python-coveralls safety
 before_script:
-  - gpg2 --recv-keys 7D2ACDAF4653CF28
-  - gpg2 --recv-keys $(gpg2 --with-colons --list-sigs 7D2ACDAF4653CF28|grep '^sig'|cut -d':' -f5|sort -u|head -n 10)
+  #- gpg2 --recv-keys 7D2ACDAF4653CF28
+  #- gpg2 --recv-keys $(gpg2 --with-colons --list-sigs 7D2ACDAF4653CF28|grep '^sig'|cut -d':' -f5|sort -u|head -n 10)
+  - curl https://www.bde.enseeiht.fr/~saurelg/11_keys.asc | gpg --import
 script:
   - ./manage.py migrate
   - coverage run manage.py test
