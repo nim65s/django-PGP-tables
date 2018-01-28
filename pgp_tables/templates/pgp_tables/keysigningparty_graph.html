@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'js/viz.js' %}"></script>
+<script src="{% static 'js/viz-lite.js' %}"></script>
 
 <script type="txt/vnd.graphviz" id='graphe'>
 {% cache 31536000 'ksp_graph' object.slug %}
@@ -29,9 +29,8 @@ digraph G {
                 {% for key in object.keys.all %}"{{ key.id }}" [label="{{ key }}"]
                 {% endfor %}
             }
-            {% for signature in object.uniq_signatures %}{% with dir=signature.dir %}{% if dir %}"{{ signature.signer.id }}" -> "{{ signature.signed.id }}" [dir={{ dir }}];
-            :wa
-            {% endif %}{% endwith %}{% endfor %}
+            {% for signature in object.uniq_signatures %}{% if signature.dir %}"{{ signature.signer.id }}" -> "{{ signature.signed.id }}" [dir={{ signature.dir }}];
+            {% endif %}{% endfor %}
         }
 {% endcache %}
 </script>
