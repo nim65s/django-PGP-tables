@@ -29,7 +29,7 @@ class Key(Model):
     def __str__(self):
         ret = f'Clef {self.id} de {self.name}'
         if self.comment is not None:
-            ret += ' ({self.comment})'
+            ret += f' ({self.comment})'
         if not self.valid:
             ret = 'INVALID ' + ret
         return ret
