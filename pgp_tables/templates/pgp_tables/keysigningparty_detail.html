@@ -4,11 +4,7 @@
 {% block title %}Key Signing Party: {{ object }}{% endblock %}
 
 {% block style %}
-<style>
-td, th { border: 1px solid black; min-width: 2em; white-space: nowrap; text-align: center; padding: 2px; }
-table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans Monospace, monospace; }
-.r { background: red; } .g { background: green; }
-</style>
+<link rel="stylesheet" href="{% static 'css/pgp.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -81,25 +77,7 @@ table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans 
 {% endcache %}
 {% endblock %}
 
-{% block js %}
+{% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<script>
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: [{% for label, count in object.algo_stats %}
-            "{{ label }}",
-            {% endfor %}
-        ],
-            datasets: [{
-                data: [{% for label, count in object.algo_stats %} {{ count }},{% endfor %}],
-                backgroundColor: ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
-                hoverBackgroundColor: ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360']
-            }]
-    },
-    options: {}
-});
-</script>
-
+<script src="{% static 'js/detail.js' %}"></script>
 {% endblock %}

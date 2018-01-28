@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load pgp_tables cache %}
+{% load static pgp_tables cache %}
 
 {% block title %}Key Signing Party: {{ object }}{% endblock %}
 
@@ -19,8 +19,8 @@
 <div id="relations"></div>
 {% endblock %}
 
-{% block js %}
-<script src="/static/js/viz.js"></script>
+{% block scripts %}
+<script src="{% static 'js/viz.js' %}"></script>
 
 <script type="txt/vnd.graphviz" id='graphe'>
 {% cache 31536000 'ksp_graph' object.slug %}
@@ -35,7 +35,6 @@ digraph G {
         }
 {% endcache %}
 </script>
+<script src="{% static 'js/graph.js' %}"></script>
 
-<script>$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: 'dot'}));</script>
-<script>$('select').change(function(){$('#relations').html(Viz($('#graphe').html(), {format:'svg', engine: $("select option:selected")[0].value}))});</script
 {% endblock %}

@@ -1,0 +1,4 @@
+td, th { border: 1px solid black; min-width: 2em; white-space: nowrap; text-align: center; padding: 2px; }
+table { border-collapse: collapse; text-align: center; font-family: DejaVu Sans Monospace, monospace; }
+.r { background: red; } .g { background: green; }
+
