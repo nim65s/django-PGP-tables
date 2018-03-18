@@ -20,6 +20,7 @@ setup(
     license='GPL License',
     description='A Django app that shows how PGP keys are cross-signed.',
     long_description=README,
+    long_description_content_type="text/markdown",
     url='https://saurel.me/',
     author='Guilhem Saurel',
     author_email='webmaster@saurel.me',
