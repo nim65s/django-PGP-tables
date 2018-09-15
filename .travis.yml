@@ -5,7 +5,7 @@ install:
   - pip install pipenv
   - pipenv install --deploy --dev
 before_script:
-  - curl https://www.bde.enseeiht.fr/~saurelg/11_keys.asc | gpg --import
+  - curl https://www.bde.enseeiht.fr/~saurelg/11_keys.asc | gpg2 --import
 script:
   - ./manage.py migrate
   - coverage run manage.py test
