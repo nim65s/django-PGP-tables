@@ -18,7 +18,7 @@ class TestKSP(TestCase):
         self.assertEqual(Signature.objects.filter(sign=True).count(), KEYS)
 
         call_command('check_signatures')
-        self.assertEqual(Signature.objects.filter(sign=True).count(), 63)  # this might change…
+        self.assertEqual(Signature.objects.filter(sign=True).count(), 64)  # this might change…
 
         # test Key model
         ksp = KeySigningParty.objects.first()
@@ -39,10 +39,10 @@ class TestKSP(TestCase):
         self.assertEqual(str(ksp), 'KSP de test (11 + 0 clefs)')
         self.assertEqual(ksp.signatures().count(), KEYS**2)
         self.assertEqual(ksp.uniq_signatures().count(), KEYS * (KEYS - 1) / 2)
-        self.assertEqual(ksp.stats(), (52, 110, 47))  # This might change…
+        self.assertEqual(ksp.stats(), (53, 110, 48))  # This might change…
         self.assertEqual(ksp.algo_stats(), [('DSA 3072', 2), ('RSA 2048', 1), ('RSA 4096', 8)])  # This might change…
         call_command('remove_absents')
-        self.assertEqual(str(ksp), 'KSP de test (8 + 3 clefs)')
+        self.assertEqual(str(ksp), 'KSP de test (9 + 2 clefs)')
 
         # test Signature model
         signature = Signature.objects.get(signer=first, signed=me)
