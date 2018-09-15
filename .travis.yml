@@ -2,7 +2,8 @@ language: python
 python:
   - 3.6
 install:
-  - pip install -r requirements.txt flake8 python-coveralls safety
+  - pip install pipenv
+  - pipenv install --deploy --dev
 before_script:
   #- gpg2 --recv-keys 7D2ACDAF4653CF28
   #- gpg2 --recv-keys $(gpg2 --with-colons --list-sigs 7D2ACDAF4653CF28|grep '^sig'|cut -d':' -f5|sort -u|head -n 10)
@@ -11,6 +12,8 @@ script:
   - ./manage.py migrate
   - coverage run manage.py test
   - flake8 .
+  - yapf -dr .
   - safety check
+  - pip install "git+https://github.com/${TRAVIS_REPO_SLUG}.git#egg=pgp_tables"
 after_success:
   - coveralls
