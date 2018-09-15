@@ -10,8 +10,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -46,8 +45,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('sign', models.BooleanField(default=False)),
-                ('signed', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='signed_by', to='pgp_tables.Key')),
-                ('signer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='signed', to='pgp_tables.Key')),
+                ('signed',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.CASCADE, related_name='signed_by', to='pgp_tables.Key')),
+                ('signer',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.CASCADE, related_name='signed', to='pgp_tables.Key')),
             ],
             options={
                 'ordering': ['signer', 'signed'],

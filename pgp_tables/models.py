@@ -2,8 +2,8 @@ from datetime import datetime
 from subprocess import CalledProcessError, call, check_output
 
 from django.db import models
-from django.db.models import (BooleanField, CharField, DateField, F, ForeignKey,
-                              IntegerField, ManyToManyField, Model, SlugField, TextField)
+from django.db.models import (BooleanField, CharField, DateField, F, ForeignKey, IntegerField, ManyToManyField, Model,
+                              SlugField, TextField)
 from django.db.models.aggregates import Count
 from django.urls import reverse
 
@@ -196,5 +196,5 @@ class KeySigningParty(Model):
                 self.absents.add(key)
 
     def algo_stats(self):
-        return sorted([('%s %i' % (ALGO[s['algorithm']], s['length']), s['count']) for s in
-                       self.keys.values('algorithm', 'length').annotate(count=Count('algorithm')).order_by()])
+        return sorted([('%s %i' % (ALGO[s['algorithm']], s['length']), s['count'])
+                       for s in self.keys.values('algorithm', 'length').annotate(count=Count('algorithm')).order_by()])
