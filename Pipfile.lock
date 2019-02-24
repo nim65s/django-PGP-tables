@@ -23,10 +23,10 @@
             ],
             "version": "==2.1.7"
         },
-        "django-autoslug-iplweb": {
+        "django-autoslug": {
             "hashes": [
-                "sha256:6ddec119072067e78cbdb53f7ba11ae8bee5a2f2f0fe1d90c6a4d3c0a91489d3",
-                "sha256:8a3ba49b18f082e29ac9cb17884d4b2149ad14988bd89e118b1c5ddf94fdea8e"
+                "sha256:08ba143ce5914d2689972c0adaea56abc37fb7175e9f6939fe0e3ac26374e7a0",
+                "sha256:aece8613eb173854462c656e91d81aa7ddfacaa49fb500d549f2143d1ce48721"
             ],
             "version": "==1.9.4"
         },
@@ -38,11 +38,11 @@
         },
         "ndh": {
             "hashes": [
-                "sha256:3d8acac75c4c7a0308f99c0b808c919603ed3c83c1495dac40063e56a1b3cf81",
-                "sha256:855dcfa3dd33d03bc601c89fe6f80a3ba17303ce8e762ac3301240519733c169"
+                "sha256:16f110cc4294264052247e7dbcb568e2dde9f7d11132af95e6be4f2eae8d537f",
+                "sha256:bc5e995cd2529a85aa1b97a001caffc732b1881f34f1bfd753ae54fac24b751f"
             ],
             "index": "pypi",
-            "version": "==3.9.0"
+            "version": "==3.9.4"
         },
         "pytz": {
             "hashes": [
